@@ -1,0 +1,53 @@
+{
+    "name": "akibeo/kirby-altcha",
+    "description": "ALTCHA for Kirby CMS: self-hosted, cookieless proof-of-work captcha with a challenge route, payload verification and a CSP-friendly widget.",
+    "type": "kirby-plugin",
+    "license": "MIT",
+    "keywords": ["kirby", "kirby-plugin", "altcha", "captcha", "spam", "proof-of-work", "privacy", "cookieless", "forms"],
+    "homepage": "https://github.com/wdebusschere/kirby-altcha",
+    "authors": [
+        {
+            "name": "Wannes Debusschere",
+            "email": "wannes@e-xperience.pt",
+            "homepage": "https://e-xperience.pt"
+        }
+    ],
+    "support": {
+        "issues": "https://github.com/wdebusschere/kirby-altcha/issues",
+        "source": "https://github.com/wdebusschere/kirby-altcha"
+    },
+    "require": {
+        "php": ">=8.1",
+        "getkirby/composer-installer": "^1.2"
+    },
+    "require-dev": {
+        "altcha-org/altcha": "^2.3",
+        "getkirby/cms": "^4.0 || ^5.0",
+        "phpunit/phpunit": "^10.5 || ^11.0"
+    },
+    "suggest": {
+        "ext-sodium": "Required for the ARGON2ID algorithm"
+    },
+    "autoload": {
+        "psr-4": {
+            "Akibeo\\Altcha\\": "src/"
+        },
+        "files": [
+            "src/helpers.php"
+        ]
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Akibeo\\Altcha\\Tests\\": "tests/"
+        }
+    },
+    "config": {
+        "optimize-autoloader": true,
+        "allow-plugins": {
+            "getkirby/composer-installer": true
+        }
+    },
+    "scripts": {
+        "test": "phpunit"
+    }
+}
