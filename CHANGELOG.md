@@ -6,6 +6,8 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+## [1.0.0] - 2026-10-05
+
 ### Added
 
 - `altcha` snippet, `altcha()->render()`, `altcha()->widget()` and
@@ -27,4 +29,5 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - Installable with Composer (`akibeo/kirby-altcha`), as a Git submodule or by
   copying the folder into `site/plugins/`.
 
-[Unreleased]: https://github.com/wdebusschere/kirby-altcha/commits/main
+[Unreleased]: https://github.com/wdebusschere/kirby-altcha/compare/1.0.0...HEAD
+[1.0.0]: https://github.com/wdebusschere/kirby-altcha/releases/tag/1.0.0
