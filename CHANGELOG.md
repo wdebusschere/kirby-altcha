@@ -6,6 +6,19 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+### Security
+
+- Secrets shorter than 32 characters and the README placeholder
+  `a-long-random-string` are refused: challenges and their signatures are
+  public, so a short secret could be brute-forced offline and used to sign
+  trivial challenges.
+- The challenge route no longer tells visitors why it failed; the reason
+  goes to the PHP error log and, while Kirby's `debug` option is on, to the
+  response.
+- README: what `'cache' => false` costs (replay protection), and that the
+  challenge route should be rate-limited when using `ARGON2ID`.
+- The GitHub Actions workflow runs with a read-only token.
+
 ### Added
 
 - `altcha` snippet, `altcha()->render()`, `altcha()->widget()` and

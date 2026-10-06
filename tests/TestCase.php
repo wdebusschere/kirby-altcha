@@ -9,7 +9,7 @@ use PHPUnit\Framework\TestCase as BaseTestCase;
 
 abstract class TestCase extends BaseTestCase
 {
-    protected const SECRET = 'test-secret';
+    protected const SECRET = 'test-secret-test-secret-test-secret-test-secret';
 
     protected string $tmp;
 

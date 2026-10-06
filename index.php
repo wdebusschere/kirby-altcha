@@ -74,7 +74,15 @@ Kirby::plugin('akibeo/altcha', [
                 try {
                     return Response::json($altcha->createChallenge(), 200, false, $headers);
                 } catch (AltchaException $e) {
-                    return Response::json(['error' => $e->getMessage()], 500, false, $headers);
+                    // The message names the misconfiguration (missing or
+                    // short secret), which is for the developer, not for
+                    // every visitor: it goes to the error log, and to the
+                    // response only while Kirby's debug mode is on.
+                    error_log('akibeo/altcha: ' . $e->getMessage());
+
+                    $error = Kirby::instance()->option('debug') === true ? $e->getMessage() : 'ALTCHA is not configured';
+
+                    return Response::json(['error' => $error], 500, false, $headers);
                 }
             },
         ],

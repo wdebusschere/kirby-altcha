@@ -3,6 +3,7 @@
 namespace Akibeo\Altcha\Tests;
 
 use Akibeo\Altcha\AltchaException;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 class AltchaTest extends TestCase
 {
@@ -144,6 +145,31 @@ class AltchaTest extends TestCase
         $this->expectException(AltchaException::class);
 
         $this->altcha(['secret' => ''])->verify('');
+    }
+
+    #[DataProvider('weakSecrets')]
+    public function testWeakSecretsAreRefused(string $secret): void
+    {
+        $this->expectException(AltchaException::class);
+        $this->expectExceptionMessage('too short');
+
+        $this->altcha(['secret' => $secret])->createChallenge();
+    }
+
+    public static function weakSecrets(): array
+    {
+        return [
+            'short' => ['correct horse battery staple'],
+            '31 characters' => [str_repeat('a', 31)],
+            'README placeholder' => ['a-long-random-string'],
+        ];
+    }
+
+    public function testASecretOf32CharactersIsAccepted(): void
+    {
+        $challenge = $this->altcha(['secret' => str_repeat('a', 32)])->createChallenge();
+
+        $this->assertArrayHasKey('signature', $challenge);
     }
 
     public function testVerifyRejectsMissingAndMalformedPayloads(): void

@@ -156,7 +156,7 @@ class InteropTest extends TestCase
 
     public function testChallengesOfAnotherSecretAreRejected(): void
     {
-        $payload = $this->solve($this->altcha(['secret' => 'another'])->createChallenge())->toBase64();
+        $payload = $this->solve($this->altcha(['secret' => 'another-secret-another-secret-another-secret'])->createChallenge())->toBase64();
         $altcha = $this->altcha();
 
         $this->assertFalse($altcha->verify($payload));

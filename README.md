@@ -70,9 +70,24 @@ php -r "echo bin2hex(random_bytes(32)), PHP_EOL;"
 
 Keep it in a host config (`config.<host>.php`) or an environment variable
 that is not committed. Anyone who knows the secret can sign their own
-challenges. Without a secret the challenge route answers with HTTP 500 and
+challenges, and since challenges and signatures are public a short secret
+can be brute-forced offline, so the plugin refuses secrets of fewer than
+32 characters and the placeholder above. Without a valid secret the
+challenge route answers with HTTP 500 (the reason is in the PHP error log,
+and in the response while Kirby's `debug` option is on) and
 `altcha()->verify()` throws an `Akibeo\Altcha\AltchaException`: a
 misconfigured site should not look like a visitor failing the captcha.
+
+### Replay protection
+
+A solved challenge is accepted once: `verify()` remembers its signature in
+the `akibeo.altcha` cache (`site/cache/<host>/akibeo.altcha`) until the
+challenge expires. With `'cache' => false` nothing is remembered and one
+solved challenge can be submitted again and again until it expires, so
+only switch the cache off when every submission is checked some other way.
+The check is a read followed by a write, not a single atomic operation, so
+a burst of simultaneous submissions of the same payload can slip through
+as duplicates; it cannot be used to skip the proof of work.
 
 ### Per-environment overrides
 
@@ -105,6 +120,13 @@ It needs the `sodium` PHP extension and much smaller numbers, for example:
 'memoryCost' => 32768, // 32 MiB
 'counter' => [20, 40],
 ```
+
+Creating a challenge costs the server one key derivation, and the
+challenge route is open to everyone: with the PBKDF2 defaults that is a few
+milliseconds per request, with `ARGON2ID` it is `memoryCost` of RAM (32 MiB
+above) per request, which makes the route a cheap way to load the server.
+If you use `ARGON2ID` on a public site, rate-limit `/altcha/challenge` in
+the web server or a reverse proxy.
 
 ### Widget options
 
