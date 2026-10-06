@@ -31,6 +31,7 @@ class Altcha
 
     protected const KEY_LENGTH = 32; // bytes
     protected const MAX_COUNTER = 4294967295; // the counter is hashed as a uint32
+    protected const MIN_SECRET_LENGTH = 32; // characters
 
     /** Kirby language code => ALTCHA translation, where they differ */
     protected const LANGUAGES = [
@@ -439,12 +440,22 @@ class Altcha
         return null;
     }
 
+    /**
+     * The signing secret. Challenges and their signatures are public, so a
+     * short secret could be brute-forced offline and then used to sign
+     * trivial challenges; the README placeholder is refused for the same
+     * reason.
+     */
     protected function secret(): string
     {
         $secret = trim((string)$this->option('secret', ''));
 
         if ($secret === '') {
             throw new AltchaException('No ALTCHA secret configured: set akibeo.altcha.secret to a long random string');
+        }
+
+        if (strlen($secret) < static::MIN_SECRET_LENGTH || $secret === 'a-long-random-string') {
+            throw new AltchaException('The ALTCHA secret is too short: set akibeo.altcha.secret to a random string of at least ' . static::MIN_SECRET_LENGTH . ' characters');
         }
 
         return $secret;
