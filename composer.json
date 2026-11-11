@@ -23,7 +23,7 @@
     "require-dev": {
         "altcha-org/altcha": "^2.3",
         "getkirby/cms": "^4.0 || ^5.0",
-        "phpunit/phpunit": "^10.5 || ^11.0"
+        "phpunit/phpunit": "^13.4.6"
     },
     "suggest": {
         "ext-sodium": "Required for the ARGON2ID algorithm"
